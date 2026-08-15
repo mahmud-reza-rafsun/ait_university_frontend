@@ -11,6 +11,9 @@ import {
   Sun,
   UserCheck,
   Users,
+  Code,
+  Cpu,
+  Microscope,
 } from "lucide-react";
 
 import {
@@ -36,84 +39,102 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { MenuItem, NavbarProps } from "@/interface/navbar.interface";
+import Link from "next/link";
 
-// Custom SVG Logo for AIT
 const AitLogo = ({ className }: { className?: string }) => (
   <svg
-    viewBox="0 0 400 300"
-    className={cn("h-8 w-auto fill-primary", className)}
+    viewBox="0 0 420 180"
+    className={cn(
+      "h-11 w-auto text-[#325E6A] dark:text-white",
+      className
+    )}
     xmlns="http://www.w3.org/2000/svg"
+    fill="none"
   >
+    {/* AIT — Geometric Monogram */}
+
+    {/* A */}
     <path
-      d="M 132 96 A 110 110 0 0 1 268 96"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="11"
-      strokeLinecap="round"
+      d="
+        M 28 148
+        L 78 28
+        L 108 28
+        L 158 148
+        L 128 148
+        L 116 116
+        L 70 116
+        L 58 148
+        Z
+
+        M 80 91
+        L 106 91
+        L 93 55
+        Z
+      "
+      fill="currentColor"
+      fillRule="evenodd"
     />
+
+    {/* I — integrated vertical pillar */}
     <path
-      d="M 134 204 A 110 110 0 0 0 266 204"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="11"
-      strokeLinecap="round"
+      d="
+        M 168 28
+        H 198
+        V 148
+        H 168
+        Z
+      "
+      fill="currentColor"
     />
-    <path d="M 158 102 L 106 198 L 138 198 L 158 160 L 178 198 L 198 198 Z" />
-    <polygon points="158,128 144,154 172,154" />
-    <polygon points="204,116 220,102 220,198 204,198" />
-    <polygon points="230,102 295,102 295,120 271,120 271,198 254,198 254,120 230,120" />
+
+    {/* T — strong horizontal crown + stem */}
+    <path
+      d="
+        M 210 28
+        H 382
+        V 58
+        H 321
+        V 148
+        H 291
+        V 58
+        H 210
+        Z
+      "
+      fill="currentColor"
+    />
+
+    {/* Signature geometric cut */}
+    <path
+      d="
+        M 210 28
+        H 250
+        L 210 68
+        Z
+      "
+      fill="white"
+      className="dark:fill-[#0f1720]"
+    />
+
+    {/* Small institutional accent */}
+    <path
+      d="
+        M 28 158
+        H 158
+        V 166
+        H 28
+        Z
+      "
+      fill="currentColor"
+      opacity="0.9"
+    />
   </svg>
 );
-
-interface MenuItem {
-  title: string;
-  url: string;
-  description?: string;
-  icon?: React.ReactNode;
-  items?: MenuItem[];
-}
-
-interface NavbarProps {
-  className?: string;
-  logo?: {
-    url: string;
-    title: string;
-  };
-  menu?: MenuItem[];
-  auth?: {
-    login: { title: string; url: string };
-    signup: { title: string; url: string };
-  };
-}
 
 const defaultMenu: MenuItem[] = [
   { title: "Home", url: "#" },
   {
-    title: "Academics",
-    url: "#",
-    items: [
-      {
-        title: "Undergraduate Programs",
-        description: "Explore bachelor degree options across technology and science",
-        icon: <GraduationCap className="size-5 shrink-0 text-primary" />,
-        url: "#",
-      },
-      {
-        title: "Postgraduate & Research",
-        description: "Master’s, PhD, and advanced research facilities",
-        icon: <BookOpen className="size-5 shrink-0 text-primary" />,
-        url: "#",
-      },
-      {
-        title: "Faculty & Schools",
-        description: "Discover our academic departments and world-class faculty",
-        icon: <Landmark className="size-5 shrink-0 text-primary" />,
-        url: "#",
-      },
-    ],
-  },
-  {
-    title: "Admissions",
+    title: "Admission",
     url: "#",
     items: [
       {
@@ -132,6 +153,30 @@ const defaultMenu: MenuItem[] = [
         title: "Student Life",
         description: "Clubs, housing, campus activities, and sports facilities",
         icon: <Users className="size-5 shrink-0 text-primary" />,
+        url: "#",
+      },
+    ],
+  },
+  {
+    title: "Subject",
+    url: "#",
+    items: [
+      {
+        title: "Computer Science & AI",
+        description: "Explore Machine Learning, Software Engineering, and AI Systems",
+        icon: <Cpu className="size-5 shrink-0 text-primary" />,
+        url: "#",
+      },
+      {
+        title: "Data Science & Analytics",
+        description: "Master big data tools, statistical modeling, and predictive analytics",
+        icon: <Code className="size-5 shrink-0 text-primary" />,
+        url: "#",
+      },
+      {
+        title: "Biotechnology & Health AI",
+        description: "Advanced bio-computing, genomic data science, and health technologies",
+        icon: <Microscope className="size-5 shrink-0 text-primary" />,
         url: "#",
       },
     ],
@@ -157,16 +202,18 @@ const Navbar = ({
   };
 
   return (
-    <section className={cn("sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60", className)}>
-      <div className="container mx-auto px-4 py-3">
+    <section
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md backdrop-saturate-150 transition-all duration-200",
+        className
+      )}
+    >
+      <div className="container mx-auto px-4 md:px-6 py-3">
         {/* Desktop Layout */}
         <nav className="hidden items-center justify-between lg:flex">
           {/* Left Side Logo */}
           <a href={logo.url} className="flex items-center gap-3 group">
             <AitLogo className="transition-transform duration-200 group-hover:scale-105" />
-            <span className="text-xl font-bold tracking-tight text-foreground">
-              {logo.title}
-            </span>
           </a>
 
           {/* Right Side Items + Theme Toggle + Auth Buttons */}
@@ -177,25 +224,25 @@ const Navbar = ({
               </NavigationMenuList>
             </NavigationMenu>
 
-            <div className="h-5 w-px bg-border" />
+            <div className="h-5 w-px bg-border/60" />
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
                 aria-label="Toggle theme"
-                className="rounded-full"
+                className="rounded-full h-9 w-9 text-muted-foreground hover:text-foreground"
               >
-                {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
+                {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
               </Button>
               <Button
-                variant="outline"
-                size="sm"
+                variant="ghost"
+                className="h-9 px-4 font-normal text-muted-foreground hover:text-foreground bg-muted transition-colors"
                 render={<a href={auth.login.url}>{auth.login.title}</a>}
               />
               <Button
-                size="sm"
+                className="h-9 px-5 font-medium shadow-sm transition-all hover:shadow-md"
                 render={<a href={auth.signup.url}>{auth.signup.title}</a>}
               />
             </div>
@@ -206,7 +253,7 @@ const Navbar = ({
         <div className="flex items-center justify-between lg:hidden">
           <a href={logo.url} className="flex items-center gap-2">
             <AitLogo />
-            <span className="text-lg font-bold tracking-tight">{logo.title}</span>
+            <span className="text-lg font-medium tracking-tight">{logo.title}</span>
           </a>
 
           <div className="flex items-center gap-2">
@@ -215,45 +262,44 @@ const Navbar = ({
               size="icon"
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              className="rounded-full"
+              className="rounded-full h-9 w-9"
             >
               {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
             </Button>
             <Button
-              variant="outline"
-              size="sm"
-              className="hidden sm:inline-flex"
+              variant="ghost"
+              className="hidden sm:inline-flex h-9 px-4 font-normal"
               render={<a href={auth.login.url}>{auth.login.title}</a>}
             />
 
             <Sheet>
-              <SheetTrigger render={<Button variant="outline" size="icon" />}>
+              <SheetTrigger render={<Button variant="outline" size="icon" className="h-9 w-9" />}>
                 <Menu className="size-5" />
               </SheetTrigger>
 
               {/* Glassmorphism Mobile Drawer */}
               <SheetContent
-                className="w-full max-w-xs border-l border-white/20 bg-background/80 backdrop-blur-md backdrop-saturate-150 p-6 dark:bg-background/80"
+                className="w-full max-w-xs border-l border-border/40 bg-background/90 backdrop-blur-xl p-6"
               >
-                <SheetHeader className="text-left border-b pb-4">
-                  <SheetTitle className="flex items-center gap-2">
+                <SheetHeader className="text-left border-b border-border/40 pb-4">
+                  <SheetTitle className="flex items-center gap-2 font-medium">
                     <AitLogo />
                     <span>{logo.title}</span>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col justify-between h-[calc(100vh-8rem)] pt-6">
-                  <Accordion className="w-full space-y-2">
+                  <Accordion className="w-full space-y-1">
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
-                  <div className="flex flex-col gap-3 pt-6 border-t border-border">
+                  <div className="flex flex-col gap-2.5 pt-6 border-t border-border/40">
                     <Button
                       variant="outline"
-                      className="w-full"
+                      className="w-full h-10 font-normal"
                       render={<a href={auth.login.url}>{auth.login.title}</a>}
                     />
                     <Button
-                      className="w-full"
+                      className="w-full h-10 font-medium"
                       render={<a href={auth.signup.url}>{auth.signup.title}</a>}
                     />
                   </div>
@@ -271,28 +317,28 @@ const renderMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger className="bg-transparent font-medium hover:bg-accent/50">
+        <NavigationMenuTrigger className="bg-transparent font-normal text-muted-foreground hover:text-foreground focus:text-foreground data-[state=open]:text-foreground hover:bg-muted/40 transition-colors">
           {item.title}
         </NavigationMenuTrigger>
-        <NavigationMenuContent className="p-2 md:w-[400px] lg:w-[500px] bg-popover/95 backdrop-blur-md shadow-lg border">
-          <ul className="grid gap-2 p-2">
+        <NavigationMenuContent className="p-2 md:w-[380px] lg:w-[440px] bg-popover/95 backdrop-blur-md border border-border/50 shadow-lg rounded-xl">
+          <ul className="grid gap-1.5 p-1.5">
             {item.items.map((subItem) => (
               <li key={subItem.title}>
                 <NavigationMenuLink
                   render={
                     <a
-                      className="flex select-none gap-3 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent"
+                      className="flex select-none gap-3 rounded-lg p-2.5 leading-none no-underline outline-none transition-colors hover:bg-muted/60 focus:bg-muted/60"
                       href={subItem.url}
                     >
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border bg-background">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-background/60">
                         {subItem.icon}
                       </div>
                       <div className="space-y-1">
-                        <div className="text-sm font-semibold leading-none text-foreground">
+                        <div className="text-sm font-medium leading-none text-foreground">
                           {subItem.title}
                         </div>
                         {subItem.description && (
-                          <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+                          <p className="line-clamp-2 text-xs leading-normal text-muted-foreground font-normal pt-1">
                             {subItem.description}
                           </p>
                         )}
@@ -312,7 +358,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <a
         href={item.url}
-        className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:outline-none"
+        className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-3.5 py-2 text-sm font-normal text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/40 focus:bg-muted/40 focus:outline-none"
       >
         {item.title}
       </a>
@@ -324,16 +370,16 @@ const renderMobileMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="py-2 text-base font-semibold hover:no-underline">
+        <AccordionTrigger className="py-2.5 text-sm font-normal text-foreground hover:no-underline">
           {item.title}
         </AccordionTrigger>
-        <AccordionContent className="pt-2 pb-0">
-          <div className="flex flex-col space-y-2 pl-2 border-l-2 border-primary/20">
+        <AccordionContent className="pt-1 pb-2">
+          <div className="flex flex-col space-y-1 pl-2 border-l border-primary/20">
             {item.items.map((subItem) => (
               <a
                 key={subItem.title}
                 href={subItem.url}
-                className="flex items-center gap-3 rounded-md p-2 text-sm font-medium hover:bg-accent transition-colors"
+                className="flex items-center gap-3 rounded-md p-2 text-xs font-normal text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
                 {subItem.icon}
                 <span>{subItem.title}</span>
@@ -347,9 +393,9 @@ const renderMobileMenuItem = (item: MenuItem) => {
 
   return (
     <div key={item.title} className="py-2">
-      <a href={item.url} className="text-base font-semibold block hover:text-primary">
+      <Link href={item.url} className="text-sm font-normal text-foreground block hover:text-primary transition-colors">
         {item.title}
-      </a>
+      </Link>
     </div>
   );
 };

@@ -131,7 +131,7 @@ export function Footer() {
 
                 {/* Bottom Footer */}
                 <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-                    <p>© {new Date().getFullYear()} AIT University. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} Advanced Information of Technology. All rights reserved.</p>
 
                     <div className="flex items-center gap-4">
                         {/* X (Formerly Twitter) SVG */}

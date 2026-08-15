@@ -46,7 +46,7 @@ const AitLogo = ({ className }: { className?: string }) => (
   <svg
     viewBox="0 0 420 180"
     className={cn(
-      "h-11 w-auto text-[#325E6A] dark:text-white",
+      "lg:h-9 h-8 w-auto text-[#325E6A] dark:text-white",
       className
     )}
     xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +186,7 @@ const defaultMenu: MenuItem[] = [
 ];
 
 const Navbar = ({
-  logo = { url: "#", title: "AIT University" },
+  logo = { url: "#", title: "" },
   menu = defaultMenu,
   auth = {
     login: { title: "Sign In", url: "#" },
@@ -212,9 +212,9 @@ const Navbar = ({
         {/* Desktop Layout */}
         <nav className="hidden items-center justify-between lg:flex">
           {/* Left Side Logo */}
-          <a href={logo.url} className="flex items-center gap-3 group">
+          <Link href={logo.url} className="flex items-center gap-3 group">
             <AitLogo className="transition-transform duration-200 group-hover:scale-105" />
-          </a>
+          </Link>
 
           {/* Right Side Items + Theme Toggle + Auth Buttons */}
           <div className="flex items-center gap-6">
@@ -238,7 +238,7 @@ const Navbar = ({
               </Button>
               <Button
                 variant="ghost"
-                className="h-9 px-4 font-normal text-muted-foreground hover:text-foreground bg-muted transition-colors"
+                className="h-9 px-4 font-normal text-muted-foreground text-foreground bg-muted transition-colors"
                 render={<a href={auth.login.url}>{auth.login.title}</a>}
               />
               <Button

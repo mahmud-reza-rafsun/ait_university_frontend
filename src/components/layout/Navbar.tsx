@@ -2,9 +2,6 @@
 
 import * as React from "react";
 import {
-  BookOpen,
-  GraduationCap,
-  Landmark,
   Menu,
   Moon,
   Sparkles,
@@ -41,98 +38,10 @@ import {
 import { cn } from "@/lib/utils";
 import { MenuItem, NavbarProps } from "@/interface/navbar.interface";
 import Link from "next/link";
-
-const AitLogo = ({ className }: { className?: string }) => (
-  <svg
-    viewBox="0 0 420 180"
-    className={cn(
-      "lg:h-9 h-8 w-auto text-[#325E6A] dark:text-white",
-      className
-    )}
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-  >
-    {/* AIT — Geometric Monogram */}
-
-    {/* A */}
-    <path
-      d="
-        M 28 148
-        L 78 28
-        L 108 28
-        L 158 148
-        L 128 148
-        L 116 116
-        L 70 116
-        L 58 148
-        Z
-
-        M 80 91
-        L 106 91
-        L 93 55
-        Z
-      "
-      fill="currentColor"
-      fillRule="evenodd"
-    />
-
-    {/* I — integrated vertical pillar */}
-    <path
-      d="
-        M 168 28
-        H 198
-        V 148
-        H 168
-        Z
-      "
-      fill="currentColor"
-    />
-
-    {/* T — strong horizontal crown + stem */}
-    <path
-      d="
-        M 210 28
-        H 382
-        V 58
-        H 321
-        V 148
-        H 291
-        V 58
-        H 210
-        Z
-      "
-      fill="currentColor"
-    />
-
-    {/* Signature geometric cut */}
-    <path
-      d="
-        M 210 28
-        H 250
-        L 210 68
-        Z
-      "
-      fill="white"
-      className="dark:fill-[#0f1720]"
-    />
-
-    {/* Small institutional accent */}
-    <path
-      d="
-        M 28 158
-        H 158
-        V 166
-        H 28
-        Z
-      "
-      fill="currentColor"
-      opacity="0.9"
-    />
-  </svg>
-);
+import { Logo } from "../Logo/Logo";
 
 const defaultMenu: MenuItem[] = [
-  { title: "Home", url: "#" },
+  { title: "Home", url: "/" },
   {
     title: "Admission",
     url: "#",
@@ -189,7 +98,7 @@ const Navbar = ({
   logo = { url: "#", title: "" },
   menu = defaultMenu,
   auth = {
-    login: { title: "Sign In", url: "#" },
+    login: { title: "Sign In", url: "/sign-in" },
     signup: { title: "Apply Now", url: "#" },
   },
   className,
@@ -212,8 +121,8 @@ const Navbar = ({
         {/* Desktop Layout */}
         <nav className="hidden items-center justify-between lg:flex">
           {/* Left Side Logo */}
-          <Link href={logo.url} className="flex items-center gap-3 group">
-            <AitLogo className="transition-transform duration-200 group-hover:scale-105" />
+          <Link href="/" className="flex items-center gap-3 group">
+            <Logo />
           </Link>
 
           {/* Right Side Items + Theme Toggle + Auth Buttons */}
@@ -236,11 +145,13 @@ const Navbar = ({
               >
                 {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
               </Button>
-              <Button
-                variant="ghost"
-                className="h-9 px-4 font-normal text-muted-foreground text-foreground bg-muted transition-colors"
-                render={<a href={auth.login.url}>{auth.login.title}</a>}
-              />
+              <Link href="/sign-up">
+                <Button
+                  variant="ghost"
+                  className="h-9 px-4 cursor-pointer font-normal text-foreground bg-muted transition-colors"
+                  render={<span>Sing Up</span>}
+                />
+              </Link>
               <Button
                 className="h-9 px-5 font-medium shadow-sm transition-all hover:shadow-md"
                 render={<a href={auth.signup.url}>{auth.signup.title}</a>}
@@ -252,7 +163,7 @@ const Navbar = ({
         {/* Mobile & Tablet Layout */}
         <div className="flex items-center justify-between lg:hidden">
           <a href={logo.url} className="flex items-center gap-2">
-            <AitLogo />
+            <Logo />
             <span className="text-lg font-medium tracking-tight">{logo.title}</span>
           </a>
 
@@ -283,7 +194,7 @@ const Navbar = ({
               >
                 <SheetHeader className="text-left border-b border-border/40 pb-4">
                   <SheetTitle className="flex items-center gap-2 font-medium">
-                    <AitLogo />
+                    <Logo />
                     <span>{logo.title}</span>
                   </SheetTitle>
                 </SheetHeader>
@@ -320,7 +231,7 @@ const renderMenuItem = (item: MenuItem) => {
         <NavigationMenuTrigger className="bg-transparent font-normal text-muted-foreground hover:text-foreground focus:text-foreground data-[state=open]:text-foreground hover:bg-muted/40 transition-colors">
           {item.title}
         </NavigationMenuTrigger>
-        <NavigationMenuContent className="p-2 md:w-[380px] lg:w-[440px] bg-popover/95 backdrop-blur-md border border-border/50 shadow-lg rounded-xl">
+        <NavigationMenuContent className="p-2 md:w-95 lg:w-110 z-auto backdrop-blur-md rounded-xl">
           <ul className="grid gap-1.5 p-1.5">
             {item.items.map((subItem) => (
               <li key={subItem.title}>

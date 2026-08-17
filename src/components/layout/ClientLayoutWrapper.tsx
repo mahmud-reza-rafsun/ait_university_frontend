@@ -6,7 +6,6 @@ import { Footer } from '@/components/layout/Footer'
 
 export function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
-    console.log("Current Path:", pathname)
     const isAuthPage =
         pathname.includes('/sign-up') ||
         pathname.includes('/sign-in') ||

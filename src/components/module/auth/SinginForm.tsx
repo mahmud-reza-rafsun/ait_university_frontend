@@ -73,9 +73,9 @@ export default function SinginForm() {
         try {
             const result = await LoginAction(data.email, data.password)
 
+            redirect("/");
             if (result?.success) {
                 toast.success('Successfully signed in!')
-                redirect("/");
             } else {
                 toast.error('Sign in failed!')
             }

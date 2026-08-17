@@ -39,34 +39,8 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
-
-// Role Selection Data
-const roles = [
-    {
-        id: 'SUPER_ADMIN',
-        name: 'Super Admin',
-        fallback: 'SA',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-1.png'
-    },
-    {
-        id: 'ADMINISTRATOR',
-        name: 'Administrator',
-        fallback: 'AD',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-2.png'
-    },
-    {
-        id: 'PROFESSOR',
-        name: 'Professor',
-        fallback: 'PR',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-3.png'
-    },
-    {
-        id: 'STUDENT',
-        name: 'Student',
-        fallback: 'ST',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-4.png'
-    }
-] as const
+import { roles } from './role'
+import Image from 'next/image'
 
 // Zod Schema for Signup
 const formSchema = z.object({
@@ -87,7 +61,7 @@ export default function SignupForm() {
 
     // Step State: 'signup' | 'otp'
     const [step, setStep] = useState<'signup' | 'otp'>('signup')
-    const [otp, setOtp] = useState<string>('123456') // Default OTP set to 123456
+    const [otp, setOtp] = useState<string>('123456')
     const [isVerifyingOtp, setIsVerifyingOtp] = useState(false)
     const [submittedEmail, setSubmittedEmail] = useState('')
 
@@ -184,7 +158,7 @@ export default function SignupForm() {
         <div className='h-screen w-full flex bg-background text-foreground overflow-hidden'>
 
             {/* LEFT SIDE: Animated Virtual Classroom */}
-            <div className='hidden lg:flex w-1/2 relative bg-white dark:bg-slate-950 text-white flex-col items-center justify-between p-10 overflow-hidden'>
+            <div className='hidden lg:flex w-1/2 relative bg-white dark:bg-slate-950 text-white flex-col items-center justify-between p-10  overflow-hidden'>
                 <div className='absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-indigo-600/20 blur-[130px] rounded-full pointer-events-none' />
                 <div className='absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-600/20 blur-[140px] rounded-full pointer-events-none' />
 
@@ -413,7 +387,7 @@ export default function SignupForm() {
                                     <div className='mt-1 flex items-center gap-3'>
                                         {imagePreview ? (
                                             <div className='relative size-12 rounded-full overflow-hidden border border-border group'>
-                                                <img src={imagePreview} alt='Preview' className='w-full h-full object-cover' />
+                                                <Image src={imagePreview} alt='Preview' className='w-full h-full object-cover' width={50} height={50} />
                                                 <button
                                                     type='button'
                                                     onClick={removeImage}

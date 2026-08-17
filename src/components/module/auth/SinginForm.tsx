@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @next/next/no-location-assign-relative-destination */
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -32,33 +34,42 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { LoginAction } from './_actions/LoginAction'
+import { redirect } from 'next/navigation'
 
-// Role Selection Data
+// Role Selection Data with Credentials
 const roles = [
     {
         id: 'SUPER_ADMIN',
         name: 'Super Admin',
         fallback: 'SA',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-1.png'
+        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-1.png',
+        email: 'rafsun@ait.com',
+        password: '12345678'
     },
     {
         id: 'ADMINISTRATOR',
         name: 'Administrator',
         fallback: 'AD',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-2.png'
+        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-2.png',
+        email: 'anhaf@ait.com',
+        password: '12345678'
     },
     {
         id: 'PROFESSOR',
         name: 'Professor',
         fallback: 'PR',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-3.png'
+        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-3.png',
+        email: 'tanvir@ait.com',
+        password: '12345678'
     },
     {
         id: 'STUDENT',
         name: 'Student',
         fallback: 'ST',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-4.png'
+        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-4.png',
+        email: 'anhaf@ait.com',
+        password: '12345678'
     }
 ] as const
 
@@ -80,39 +91,38 @@ export default function SinginForm() {
         register,
         handleSubmit,
         control,
+        setValue,
         formState: { errors, isSubmitting }
     } = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: '',
+            email: roles[0].email,
             role: roles[0].id,
-            password: ''
+            password: roles[0].password
         }
     })
 
-    const onSubmit = async (data: FormValues) => {
-        try {
-            await new Promise((resolve) => setTimeout(resolve, 1200))
-            console.log('Submitted Data:', data)
-
-            toast.success('Successfully signed in!', {
-                description: 'Welcome to the system.'
-            })
-        } catch {
-            toast.error('Sign in failed!', {
-                description: 'Please check your credentials and try again.'
-            })
-        }
+    // Role পরিবর্তন হলে ইমেইল ও পাসওয়ার্ড ফিল্ড সেট করার ফাংশন
+    const handleRoleSelect = (roleItem: RoleOption, onChangeRole: (id: string) => void) => {
+        setSelectedRole(roleItem)
+        onChangeRole(roleItem.id)
+        setValue('email', roleItem.email, { shouldValidate: true })
+        setValue('password', roleItem.password, { shouldValidate: true })
     }
 
-    const searchParams = useSearchParams()
-    // URL-এ ?redirect=/xyz থাকলে সেটা নেবে, না থাকলে ডিফল্ট '/dashboard'
-    const redirectPath = searchParams.get('redirect') || '/dashboard'
+    const onSubmit = async (data: FormValues) => {
+        try {
+            const result = await LoginAction(data.email, data.password)
 
-    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-
-    const handleSocialLogin = (provider: 'google' | 'github') => {
-        window.location.href = `${BACKEND_URL}/api/v1/auth/login/${provider}?redirect=${encodeURIComponent(redirectPath)}`
+            if (result?.success) {
+                toast.success('Successfully signed in!')
+                redirect("/");
+            } else {
+                toast.error('Sign in failed!')
+            }
+        } catch (error) {
+            toast.error('Something went wrong!')
+        }
     }
 
     return (
@@ -121,7 +131,7 @@ export default function SinginForm() {
             {/* LEFT SIDE: Dynamic Light/Dark Dashboard & Security Animation */}
             <div className='hidden lg:flex w-1/2 relative bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white flex-col items-center justify-between p-10 overflow-hidden border-r border-border/40 transition-colors duration-300'>
 
-                {/* Background Glows (Adjusted for Light & Dark mode) */}
+                {/* Background Glows */}
                 <div className='absolute top-1/3 left-1/4 w-[380px] h-[380px] bg-blue-500/10 dark:bg-blue-600/20 blur-[130px] rounded-full pointer-events-none' />
                 <div className='absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-500/10 dark:bg-indigo-600/20 blur-[140px] rounded-full pointer-events-none' />
 
@@ -204,12 +214,15 @@ export default function SinginForm() {
                         </p>
                     </div>
 
-                    {/* Google & GitHub Social Login Buttons */}
+                    {/* Social Login */}
                     <div className='grid grid-cols-2 gap-3'>
                         <Button
                             type='button'
                             variant='outline'
-                            onClick={() => handleSocialLogin('google')}
+                            onClick={() => {
+                                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://ait-university-backend.vercel.app";
+                                window.location.assign(`${baseUrl}/api/v1/auth/login/google`);
+                            }}
                             className='h-9 text-xs font-medium cursor-pointer border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-lg'
                         >
                             <svg className='mr-2 size-4' viewBox='0 0 24 24'>
@@ -239,7 +252,6 @@ export default function SinginForm() {
                         <Button
                             type='button'
                             variant='outline'
-                            onClick={() => handleSocialLogin('github')}
                             className='h-9 text-xs font-medium cursor-pointer border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-lg'
                         >
                             <svg className='mr-2 size-4 fill-current' viewBox='0 0 24 24'>
@@ -289,10 +301,7 @@ export default function SinginForm() {
                                             {roles.map((roleItem) => (
                                                 <DropdownMenuItem
                                                     key={roleItem.id}
-                                                    onClick={() => {
-                                                        setSelectedRole(roleItem)
-                                                        field.onChange(roleItem.id)
-                                                    }}
+                                                    onClick={() => handleRoleSelect(roleItem, field.onChange)}
                                                     className='cursor-pointer flex items-center justify-between text-xs focus:bg-accent focus:text-accent-foreground'
                                                 >
                                                     <div className='flex items-center gap-2'>

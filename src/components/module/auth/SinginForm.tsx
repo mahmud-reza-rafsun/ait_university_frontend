@@ -35,9 +35,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
 import { LoginAction } from './_actions/LoginAction'
-import { redirect } from 'next/navigation'
 import { formSchema } from '@/validation/singin.zod'
-import { roles } from './role'
+import { roles } from '@/config/role'
+import { useRouter } from 'next/navigation'
 
 
 type FormValues = z.infer<typeof formSchema>
@@ -46,6 +46,7 @@ type RoleOption = (typeof roles)[number]
 export default function SinginForm() {
     const [showPassword, setShowPassword] = useState(false)
     const [selectedRole, setSelectedRole] = useState<RoleOption>(roles[0])
+    const router = useRouter();
 
     const {
         register,
@@ -71,18 +72,19 @@ export default function SinginForm() {
 
     const onSubmit = async (data: FormValues) => {
         try {
-            const result = await LoginAction(data.email, data.password)
+            const result = await LoginAction(data.email, data.password);
 
-            redirect("/");
             if (result?.success) {
-                toast.success('Successfully signed in!')
+                toast.success('Successfully signed in!');
+                router.push("/lesson");
+                router.refresh();
             } else {
-                toast.error('Sign in failed!')
+                toast.error('Sign in failed!');
             }
         } catch (error) {
-            toast.error('Something went wrong!')
+            toast.error('Something went wrong!');
         }
-    }
+    };
 
     return (
         <div className='h-screen w-full flex bg-background text-foreground overflow-hidden'>

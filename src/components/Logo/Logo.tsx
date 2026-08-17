@@ -7,7 +7,7 @@ interface AitLogoProps {
 
 export const Logo: React.FC<AitLogoProps> = () => {
     return (
-        <Image src="/logo.png" width={50} height={50} alt="AIT logo" className="rounded-xl" />
+        <Image src="/logo.png" width={45} height={45} alt="AIT logo" className="rounded-xl bg-black dark:bg-none" />
     );
 };
 

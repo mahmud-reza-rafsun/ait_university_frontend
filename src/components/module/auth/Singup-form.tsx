@@ -39,8 +39,8 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
-import { roles } from './role'
 import Image from 'next/image'
+import { roles } from '@/config/role'
 
 // Zod Schema for Signup
 const formSchema = z.object({

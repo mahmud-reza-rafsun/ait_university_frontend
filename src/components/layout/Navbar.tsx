@@ -12,7 +12,6 @@ import {
   Cpu,
   Microscope,
 } from "lucide-react";
-
 import {
   Accordion,
   AccordionContent,
@@ -39,6 +38,7 @@ import { cn } from "@/lib/utils";
 import { MenuItem, NavbarProps } from "@/interface/navbar.interface";
 import Link from "next/link";
 import { Logo } from "../Logo/Logo";
+import DarkMode from "../module/Theme/DarkMode";
 
 const defaultMenu: MenuItem[] = [
   { title: "Home", url: "/" },
@@ -95,20 +95,14 @@ const defaultMenu: MenuItem[] = [
 ];
 
 const Navbar = ({
-  logo = { url: "#", title: "" },
   menu = defaultMenu,
   auth = {
     login: { title: "Sign In", url: "/sign-in" },
-    signup: { title: "Apply Now", url: "#" },
+    signup: { title: "Apply Now", url: "/sign-up" },
   },
   className,
 }: NavbarProps) => {
-  const [isDark, setIsDark] = React.useState(false);
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle("dark");
-  };
 
   return (
     <section
@@ -118,14 +112,11 @@ const Navbar = ({
       )}
     >
       <div className="container mx-auto px-4 md:px-6 py-3">
-        {/* Desktop Layout */}
         <nav className="hidden items-center justify-between lg:flex">
-          {/* Left Side Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3">
             <Logo />
           </Link>
 
-          {/* Right Side Items + Theme Toggle + Auth Buttons */}
           <div className="flex items-center gap-6">
             <NavigationMenu>
               <NavigationMenuList className="gap-1">
@@ -136,82 +127,62 @@ const Navbar = ({
             <div className="h-5 w-px bg-border/60" />
 
             <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-                className="rounded-full h-9 w-9 text-muted-foreground hover:text-foreground"
-              >
-                {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-              </Button>
-              <Link href="/sign-up">
+              <DarkMode />
+              <Link href="/sign-in">
                 <Button
                   variant="ghost"
-                  className="h-9 px-4 cursor-pointer font-normal text-foreground bg-muted transition-colors"
-                  render={<span>Sing Up</span>}
-                />
+                  className="h-9 px-4 font-normal cursor-pointer text-foreground bg-muted hover:bg-muted/80 transition-colors"
+                >
+                  Sign In
+                </Button>
               </Link>
               <Button
-                className="h-9 px-5 font-medium shadow-sm transition-all hover:shadow-md"
+                className="h-9 px-5 font-medium shadow-sm hover:shadow-md transition-all"
                 render={<a href={auth.signup.url}>{auth.signup.title}</a>}
               />
             </div>
           </div>
         </nav>
 
-        {/* Mobile & Tablet Layout */}
         <div className="flex items-center justify-between lg:hidden">
-          <a href={logo.url} className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Logo />
-            <span className="text-lg font-medium tracking-tight">{logo.title}</span>
-          </a>
+          </Link>
 
           <div className="flex items-center gap-2">
+            <DarkMode />
             <Button
               variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="rounded-full h-9 w-9"
-            >
-              {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-            </Button>
-            <Button
-              variant="ghost"
-              className="hidden sm:inline-flex h-9 px-4 font-normal"
-              render={<a href={auth.login.url}>{auth.login.title}</a>}
+              className="hidden sm:inline-flex h-9 px-4 font-normal text-foreground hover:bg-muted/50"
+              render={<Link href={auth.login.url}>{auth.login.title}</Link>}
             />
 
             <Sheet>
-              <SheetTrigger render={<Button variant="outline" size="icon" className="h-9 w-9" />}>
+              <SheetTrigger className="inline-flex items-center justify-center h-9 w-9 rounded-md border border-border bg-background text-foreground hover:bg-muted transition-colors">
                 <Menu className="size-5" />
               </SheetTrigger>
 
-              {/* Glassmorphism Mobile Drawer */}
-              <SheetContent
-                className="w-full max-w-xs border-l border-border/40 bg-background/90 backdrop-blur-xl p-6"
-              >
-                <SheetHeader className="text-left border-b border-border/40 pb-4">
-                  <SheetTitle className="flex items-center gap-2 font-medium">
+              <SheetContent className="w-full max-w-xs border-l border-border/40 bg-background/95 backdrop-blur-xl p-0 [&>button]:top-4 [&>button]:right-5 [&>button]:text-muted-foreground [&>button]:hover:text-foreground">
+                <SheetHeader className="flex flex-row items-center h-[57px] px-5 border-b border-border/40">
+                  <SheetTitle className="flex items-center gap-2.5 font-medium text-foreground m-0 p-0 leading-none">
                     <Logo />
-                    <span>{logo.title}</span>
                   </SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col justify-between h-[calc(100vh-8rem)] pt-6">
-                  <Accordion className="w-full space-y-1">
+
+                <div className="flex flex-col justify-between h-[calc(100vh-57px)] px-5 pt-3 pb-6">
+                  <Accordion className="w-full">
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
-                  <div className="flex flex-col gap-2.5 pt-6 border-t border-border/40">
+                  <div className="flex flex-col gap-2.5 pt-5 border-t border-border/40">
                     <Button
                       variant="outline"
-                      className="w-full h-10 font-normal"
-                      render={<a href={auth.login.url}>{auth.login.title}</a>}
+                      className="w-full h-10 font-normal text-foreground cursor-pointer border-border hover:bg-muted/50"
+                      render={<Link href={auth.login.url}>{auth.login.title}</Link>}
                     />
                     <Button
                       className="w-full h-10 font-medium"
-                      render={<a href={auth.signup.url}>{auth.signup.title}</a>}
+                      render={<Link href={auth.signup.url}>{auth.signup.title}</Link>}
                     />
                   </div>
                 </div>
@@ -231,30 +202,30 @@ const renderMenuItem = (item: MenuItem) => {
         <NavigationMenuTrigger className="bg-transparent font-normal text-muted-foreground hover:text-foreground focus:text-foreground data-[state=open]:text-foreground hover:bg-muted/40 transition-colors">
           {item.title}
         </NavigationMenuTrigger>
-        <NavigationMenuContent className="p-2 md:w-95 lg:w-110 z-auto backdrop-blur-md rounded-xl">
+        <NavigationMenuContent className="p-2 md:w-95 lg:w-110 backdrop-blur-md rounded-xl">
           <ul className="grid gap-1.5 p-1.5">
             {item.items.map((subItem) => (
               <li key={subItem.title}>
                 <NavigationMenuLink
                   render={
-                    <a
-                      className="flex select-none gap-3 rounded-lg p-2.5 leading-none no-underline outline-none transition-colors hover:bg-muted/60 focus:bg-muted/60"
+                    <Link
                       href={subItem.url}
+                      className="flex select-none gap-3 rounded-lg p-2.5 no-underline outline-none transition-colors hover:bg-muted/60 focus:bg-muted/60"
                     >
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-background/60">
                         {subItem.icon}
                       </div>
                       <div className="space-y-1">
-                        <div className="text-sm font-medium leading-none text-foreground">
+                        <p className="text-sm font-medium leading-none text-foreground">
                           {subItem.title}
-                        </div>
+                        </p>
                         {subItem.description && (
-                          <p className="line-clamp-2 text-xs leading-normal text-muted-foreground font-normal pt-1">
+                          <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground pt-0.5">
                             {subItem.description}
                           </p>
                         )}
                       </div>
-                    </a>
+                    </Link>
                   }
                 />
               </li>
@@ -267,12 +238,12 @@ const renderMenuItem = (item: MenuItem) => {
 
   return (
     <NavigationMenuItem key={item.title}>
-      <a
+      <Link
         href={item.url}
-        className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-3.5 py-2 text-sm font-normal text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/40 focus:bg-muted/40 focus:outline-none"
+        className="inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-3.5 py-2 text-sm font-normal text-muted-foreground no-underline transition-colors hover:text-foreground hover:bg-muted/40 focus:bg-muted/40 focus:outline-none"
       >
         {item.title}
-      </a>
+      </Link>
     </NavigationMenuItem>
   );
 };
@@ -280,21 +251,21 @@ const renderMenuItem = (item: MenuItem) => {
 const renderMobileMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
-      <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="py-2.5 text-sm font-normal text-foreground hover:no-underline">
+      <AccordionItem key={item.title} value={item.title} className="border-b border-border/30">
+        <AccordionTrigger className="py-3 text-sm font-normal text-foreground hover:text-foreground hover:no-underline [&>svg]:text-muted-foreground">
           {item.title}
         </AccordionTrigger>
-        <AccordionContent className="pt-1 pb-2">
-          <div className="flex flex-col space-y-1 pl-2 border-l border-primary/20">
+        <AccordionContent className="pb-3 pt-0">
+          <div className="flex flex-col space-y-0.5 pl-3 ml-1 border-l-2 border-primary/20">
             {item.items.map((subItem) => (
-              <a
+              <Link
                 key={subItem.title}
                 href={subItem.url}
-                className="flex items-center gap-3 rounded-md p-2 text-xs font-normal text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-normal text-muted-foreground no-underline hover:text-foreground hover:bg-muted/50 transition-colors"
               >
-                {subItem.icon}
+                <span className="shrink-0 [&>svg]:size-4">{subItem.icon}</span>
                 <span>{subItem.title}</span>
-              </a>
+              </Link>
             ))}
           </div>
         </AccordionContent>
@@ -303,8 +274,11 @@ const renderMobileMenuItem = (item: MenuItem) => {
   }
 
   return (
-    <div key={item.title} className="py-2">
-      <Link href={item.url} className="text-sm font-normal text-foreground block hover:text-primary transition-colors">
+    <div key={item.title} className="border-b border-border/30">
+      <Link
+        href={item.url}
+        className="flex items-center py-3 text-sm font-normal text-foreground no-underline hover:text-primary transition-colors"
+      >
         {item.title}
       </Link>
     </div>

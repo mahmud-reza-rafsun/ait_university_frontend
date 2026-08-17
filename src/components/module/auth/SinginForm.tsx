@@ -36,49 +36,9 @@ import {
 import Link from 'next/link'
 import { LoginAction } from './_actions/LoginAction'
 import { redirect } from 'next/navigation'
+import { formSchema } from '@/validation/singin.zod'
+import { roles } from './role'
 
-// Role Selection Data with Credentials
-const roles = [
-    {
-        id: 'SUPER_ADMIN',
-        name: 'Super Admin',
-        fallback: 'SA',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-1.png',
-        email: 'rafsun@ait.com',
-        password: '12345678'
-    },
-    {
-        id: 'ADMINISTRATOR',
-        name: 'Administrator',
-        fallback: 'AD',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-2.png',
-        email: 'anhaf@ait.com',
-        password: '12345678'
-    },
-    {
-        id: 'PROFESSOR',
-        name: 'Professor',
-        fallback: 'PR',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-3.png',
-        email: 'tanvir@ait.com',
-        password: '12345678'
-    },
-    {
-        id: 'STUDENT',
-        name: 'Student',
-        fallback: 'ST',
-        src: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-4.png',
-        email: 'anhaf@ait.com',
-        password: '12345678'
-    }
-] as const
-
-// Zod Schema (Only Email, Password, and Role)
-const formSchema = z.object({
-    email: z.string().email({ message: 'Please enter a valid email address.' }),
-    role: z.string().min(1, { message: 'Please select a role.' }),
-    password: z.string().min(6, { message: 'Password must be at least 6 characters long.' })
-})
 
 type FormValues = z.infer<typeof formSchema>
 type RoleOption = (typeof roles)[number]
@@ -102,7 +62,6 @@ export default function SinginForm() {
         }
     })
 
-    // Role পরিবর্তন হলে ইমেইল ও পাসওয়ার্ড ফিল্ড সেট করার ফাংশন
     const handleRoleSelect = (roleItem: RoleOption, onChangeRole: (id: string) => void) => {
         setSelectedRole(roleItem)
         onChangeRole(roleItem.id)
@@ -220,7 +179,7 @@ export default function SinginForm() {
                             type='button'
                             variant='outline'
                             onClick={() => {
-                                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://ait-university-backend.vercel.app";
+                                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
                                 window.location.assign(`${baseUrl}/api/v1/auth/login/google`);
                             }}
                             className='h-9 text-xs font-medium cursor-pointer border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-lg'

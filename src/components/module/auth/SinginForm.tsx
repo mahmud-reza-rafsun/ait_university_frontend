@@ -37,7 +37,7 @@ import Link from 'next/link'
 import { LoginAction } from './_actions/LoginAction'
 import { formSchema } from '@/validation/singin.zod'
 import { roles } from '@/config/role'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 
 type FormValues = z.infer<typeof formSchema>
@@ -47,6 +47,9 @@ export default function SinginForm() {
     const [showPassword, setShowPassword] = useState(false)
     const [selectedRole, setSelectedRole] = useState<RoleOption>(roles[0])
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const callbackUrl = searchParams.get("callbackUrl") || "/lesson";
 
     const {
         register,
@@ -77,7 +80,6 @@ export default function SinginForm() {
             if (result?.success) {
                 toast.success('Successfully signed in!');
                 router.push("/lesson");
-                router.refresh();
             } else {
                 toast.error('Sign in failed!');
             }

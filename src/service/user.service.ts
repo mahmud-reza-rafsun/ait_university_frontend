@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-// import { IUpdateProfile } from "@/interface/updateProfile.interface";
 import { env } from "@/lib/env";
 import { cookies } from "next/headers";
 
-const AUTH_URL = env.BACKEND_URL
+const AUTH_URL = env.SESSION_URL
 
 export const userService = {
     getSession: async function () {

@@ -1,16 +1,7 @@
 "use client";
 
-import * as React from "react";
 import {
     Menu,
-    Moon,
-    Sparkles,
-    Sun,
-    UserCheck,
-    Users,
-    Code,
-    Cpu,
-    Microscope,
 } from "lucide-react";
 import {
     Accordion,
@@ -37,71 +28,31 @@ import {
 import { cn } from "@/lib/utils";
 import { MenuItem, NavbarProps } from "@/interface/navbar.interface";
 import Link from "next/link";
-import Logo from "@/components/Logo/Logo";
-import DarkMode from "@/components/module/Theme/DarkMode";
+import Logo from "@/components/shared/Logo";
+import ThemeToggle from "@/components/shared/theme/ThemeToggle";
+import { UserMenu } from "@/components/shared/UserMenu";
 
 const defaultMenu: MenuItem[] = [
-    { title: "Home", url: "/" },
-    {
-        title: "Admission",
-        url: "#",
-        items: [
-            {
-                title: "How to Apply",
-                description: "Step-by-step guidance for domestic & international students",
-                icon: <UserCheck className="size-5 shrink-0 text-primary" />,
-                url: "#",
-            },
-            {
-                title: "Scholarships & Aid",
-                description: "Financial support and merit-based scholarship programs",
-                icon: <Sparkles className="size-5 shrink-0 text-primary" />,
-                url: "#",
-            },
-            {
-                title: "Student Life",
-                description: "Clubs, housing, campus activities, and sports facilities",
-                icon: <Users className="size-5 shrink-0 text-primary" />,
-                url: "#",
-            },
-        ],
-    },
-    {
-        title: "Subject",
-        url: "#",
-        items: [
-            {
-                title: "Computer Science & AI",
-                description: "Explore Machine Learning, Software Engineering, and AI Systems",
-                icon: <Cpu className="size-5 shrink-0 text-primary" />,
-                url: "#",
-            },
-            {
-                title: "Data Science & Analytics",
-                description: "Master big data tools, statistical modeling, and predictive analytics",
-                icon: <Code className="size-5 shrink-0 text-primary" />,
-                url: "#",
-            },
-            {
-                title: "Biotechnology & Health AI",
-                description: "Advanced bio-computing, genomic data science, and health technologies",
-                icon: <Microscope className="size-5 shrink-0 text-primary" />,
-                url: "#",
-            },
-        ],
-    },
-    { title: "Research", url: "#" },
-    { title: "About AIT", url: "#" },
+    { title: "Lesson", url: "/lesson" },
+    { title: "Research", url: "/research" },
+    { title: "AIT Crecker", url: "/ait-crecker" },
 ];
 
 const Navbar = ({
     menu = defaultMenu,
-    auth = {
-        login: { title: "Sign In", url: "/sign-in" },
-        signup: { title: "Apply Now", url: "/sign-up" },
-    },
     className,
 }: NavbarProps) => {
+
+    const currentUser = {
+        name: "John Doe",
+        email: "john@example.com",
+        image: "https://github.com/shadcn.png",
+    };
+
+    const handleLogout = async () => {
+        // Logout logic here
+        console.log("User logged out");
+    };
 
 
     return (
@@ -115,7 +66,6 @@ const Navbar = ({
                 <nav className="hidden items-center justify-between lg:flex">
                     <Link href="/" className="flex items-center gap-3">
                         <Logo />
-                        <h1>uni</h1>
                     </Link>
 
                     <div className="flex items-center gap-6">
@@ -128,19 +78,11 @@ const Navbar = ({
                         <div className="h-5 w-px bg-border/60" />
 
                         <div className="flex items-center gap-3">
-                            <DarkMode />
-                            <Link href="/sign-in">
-                                <Button
-                                    variant="ghost"
-                                    className="h-9 px-4 font-normal cursor-pointer text-foreground bg-muted hover:bg-muted/80 transition-colors"
-                                >
-                                    Sign In
-                                </Button>
-                            </Link>
+                            <ThemeToggle />
+                            <UserMenu user={currentUser} onLogout={handleLogout} />
                             <Button
-                                className="h-9 px-5 font-medium shadow-sm hover:shadow-md transition-all"
-                                render={<a href={auth.signup.url}>{auth.signup.title}</a>}
-                            />
+                                className="h-9 px-5 font-medium transition-all"
+                                render={<Link href="/dashboard">Dashboard</Link>} />
                         </div>
                     </div>
                 </nav>
@@ -151,13 +93,8 @@ const Navbar = ({
                     </Link>
 
                     <div className="flex items-center gap-2">
-                        <DarkMode />
-                        <Button
-                            variant="ghost"
-                            className="hidden sm:inline-flex h-9 px-4 font-normal text-foreground hover:bg-muted/50"
-                            render={<Link href={auth.login.url}>{auth.login.title}</Link>}
-                        />
-
+                        <ThemeToggle />
+                        <UserMenu user={currentUser} onLogout={handleLogout} />
                         <Sheet>
                             <SheetTrigger className="inline-flex items-center justify-center h-9 w-9 rounded-md border border-border bg-background text-foreground hover:bg-muted transition-colors">
                                 <Menu className="size-5" />
@@ -177,14 +114,9 @@ const Navbar = ({
 
                                     <div className="flex flex-col gap-2.5 pt-5 border-t border-border/40">
                                         <Button
-                                            variant="outline"
-                                            className="w-full h-10 font-normal text-foreground cursor-pointer border-border hover:bg-muted/50"
-                                            render={<Link href={auth.login.url}>{auth.login.title}</Link>}
-                                        />
-                                        <Button
                                             className="w-full h-10 font-medium"
-                                            render={<Link href={auth.signup.url}>{auth.signup.title}</Link>}
-                                        />
+                                            render={<Link href="/dashboard">Dashboard</Link>} />
+
                                     </div>
                                 </div>
                             </SheetContent>

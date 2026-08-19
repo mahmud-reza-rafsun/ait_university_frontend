@@ -37,8 +37,8 @@ import {
 import { cn } from "@/lib/utils";
 import { MenuItem, NavbarProps } from "@/interface/navbar.interface";
 import Link from "next/link";
-import { Logo } from "../Logo/Logo";
-import DarkMode from "../module/Theme/DarkMode";
+import ThemeToggle from "../shared/theme/ThemeToggle";
+import Logo from "../shared/Logo";
 
 const defaultMenu: MenuItem[] = [
   { title: "Home", url: "/" },
@@ -92,6 +92,7 @@ const defaultMenu: MenuItem[] = [
   },
   { title: "Research", url: "#" },
   { title: "About AIT", url: "#" },
+  { title: "Lesson", url: "/lesson" },
 ];
 
 const Navbar = ({
@@ -127,7 +128,7 @@ const Navbar = ({
             <div className="h-5 w-px bg-border/60" />
 
             <div className="flex items-center gap-3">
-              <DarkMode />
+              <ThemeToggle />
               <Link href="/sign-in">
                 <Button
                   variant="ghost"
@@ -150,7 +151,7 @@ const Navbar = ({
           </Link>
 
           <div className="flex items-center gap-2">
-            <DarkMode />
+            <ThemeToggle />
             <Button
               variant="ghost"
               className="hidden sm:inline-flex h-9 px-4 font-normal text-foreground hover:bg-muted/50"

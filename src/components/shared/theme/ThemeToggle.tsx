@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Moon, Sun } from 'lucide-react';
 import React from 'react';
 
-export default function DarkMode() {
+export default function ThemeToggle() {
     const [isDark, setIsDark] = React.useState(false);
 
     const toggleTheme = () => {

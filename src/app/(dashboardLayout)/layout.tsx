@@ -1,5 +1,4 @@
-"use client"
-import { Navbar } from "./_components/Layout/Navbar";
+import { Navbar } from "../(LessonLayout)/_components/Layout/Navbar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
